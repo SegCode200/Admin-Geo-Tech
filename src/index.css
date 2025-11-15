@@ -14,4 +14,18 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+body {
+  @apply font-sans text-gray-800 bg-gray-50;
+}
+/* Force Urbanist font across Ant Design components */
+.ant-card,
+.ant-statistic,
+.ant-statistic-title,
+.ant-statistic-content,
+.ant-typography,
+.ant-table,
+.ant-tabs,
+.ant-tag,
+.ant-tooltip {
+  font-family: "Urbanist", sans-serif !important;
+}

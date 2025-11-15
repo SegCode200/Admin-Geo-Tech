@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+       fontFamily: {
+        sans: ["Urbanist", "ui-sans-serif", "system-ui"],
+      },
       colors: {
         primary: '#2563EB',
         secondary: '#1366D9',

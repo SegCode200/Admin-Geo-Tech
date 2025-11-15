@@ -1,15 +1,13 @@
 import { Table, Tag, Spin, Card } from "antd";
-import { useActivites } from "../../hooks/userHooks";
+import { usePayments } from "../../hooks/userHooks";
 import { useState, useEffect } from "react";
 
-const Activities = () => {
-  const { activites: data, isLoading } = useActivites();
-
-  // Track screen width
+const Payments = () => {
+  const { payments: data, isLoading } = usePayments();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024); // <1024px => tablet/mobile
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -22,59 +20,67 @@ const Activities = () => {
       </div>
     );
 
-  // === TABLE COLUMNS FOR DESKTOP ===
+  // 🖥 DESKTOP TABLE COLUMNS
   const columns = [
     {
       title: "CofO No.",
-      dataIndex: ["cofO", "cofONumber"],
+      dataIndex: "cofONumber",
       ellipsis: true,
+      width: 150,
     },
     {
-      title: "Approver",
-      dataIndex: ["approver", "name"],
-      render: (name: string, record: any) =>
-        `${name || "—"} (${record.approver?.role || "N/A"})`,
+      title: "Applicant",
+      dataIndex: ["user", "fullName"],
+      ellipsis: true,
+      width: 200,
     },
     {
-      title: "Position",
-      dataIndex: ["approver", "position"],
+      title: "Email",
+      dataIndex: ["user", "email"],
+      ellipsis: true,
       responsive: ["md"],
+      width: 220,
+    },
+    {
+      title: "Payment Ref",
+      dataIndex: "paymentRef",
+      ellipsis: true,
+      width: 200,
     },
     {
       title: "Status",
-      dataIndex: ["cofO", "status"],
+      dataIndex: "paymentStatus",
       render: (status: string) => {
         const color =
-          status === "APPROVED"
+          status === "SUCCESS"
             ? "green"
-            : status === "REJECTED"
-            ? "red"
             : status === "PENDING"
             ? "orange"
-            : "blue";
-        return <Tag color={color}>{status || "N/A"}</Tag>;
+            : "red";
+        return <Tag color={color}>{status}</Tag>;
       },
+      width: 120,
     },
     {
       title: "Date",
-      dataIndex: "arrivedAt",
-      render: (date: string) => new Date(date).toLocaleString(),
+      dataIndex: "createdAt",
+      render: (date: string) => new Date(date).toLocaleDateString(),
+      responsive: ["sm"],
+      width: 160,
     },
   ];
 
-  // === LIST VIEW FOR MOBILE/TABLET ===
+  // 📱 MOBILE/TABLET LIST VIEW
   const ListView = () => (
     <div className="grid gap-4">
       {data?.map((item: any) => {
-        const status = item?.cofO?.status;
+        const status = item.paymentStatus;
         const color =
-          status === "APPROVED"
+          status === "SUCCESS"
             ? "green"
-            : status === "REJECTED"
-            ? "red"
             : status === "PENDING"
             ? "orange"
-            : "blue";
+            : "red";
 
         return (
           <div
@@ -83,24 +89,29 @@ const Activities = () => {
           >
             <div className="flex justify-between items-center mb-2">
               <p className="text-[14px] font-semibold text-gray-800">
-                CofO No: {item?.cofO?.cofONumber || "—"}
+                CofO No: {item.cofONumber || "—"}
               </p>
-              <Tag color={color}>{status || "N/A"}</Tag>
+              <Tag color={color}>{status}</Tag>
             </div>
 
             <p className="text-gray-600 text-[13px]">
-              <span className="font-medium">Approver:</span>{" "}
-              {item?.approver?.name || "—"} ({item?.approver?.role || "N/A"})
+              <span className="font-medium">Applicant:</span>{" "}
+              {item?.user?.fullName || "—"}
             </p>
 
-            <p className="text-gray-600 text-[13px]">
-              <span className="font-medium">Position:</span>{" "}
-              {item?.approver?.position || "—"}
+            <p className="text-gray-600 text-[13px] truncate">
+              <span className="font-medium">Email:</span>{" "}
+              {item?.user?.email || "—"}
+            </p>
+
+            <p className="text-gray-600 text-[13px] truncate">
+              <span className="font-medium">Payment Ref:</span>{" "}
+              {item.paymentRef || "—"}
             </p>
 
             <p className="text-gray-600 text-[13px]">
               <span className="font-medium">Date:</span>{" "}
-              {new Date(item?.arrivedAt).toLocaleString()}
+              {new Date(item.createdAt).toLocaleString()}
             </p>
           </div>
         );
@@ -113,16 +124,14 @@ const Activities = () => {
       <Card
         title={
           <span className="font-semibold text-[16px] sm:text-[18px] text-gray-700">
-            All Activities
+            Payment Monitoring
           </span>
         }
         className="shadow-sm rounded-lg overflow-hidden"
         bodyStyle={{ padding: "0.75rem" }}
       >
-        {/* Switch based on screen size */}
         {isMobile ? (
-          data?.length === 0 ?
-          <h2>No Data found</h2> :
+            data?.length === 0 ? <h1>No Data yet</h1>:
           <ListView />
         ) : (
           <Table
@@ -142,4 +151,4 @@ const Activities = () => {
   );
 };
 
-export default Activities;
+export default Payments;

@@ -3,8 +3,10 @@ import { Layout } from "../components/layouts/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
 import  Approvals  from "../pages/dashboard/Approval";
 import  Settings  from "../pages/dashboard/Settings";
-import { Login } from "../pages/auth/Login";
 import ApprovalReview from "../pages/dashboard/ApprovalReview";
+import ProtectedRoute from "../pages/auth/ProtectedRoute";
+import Login from "../pages/auth/Login";
+import Payments from "../pages/dashboard/Payments";
 
 // Layout Component with Sidebar
 
@@ -22,11 +24,16 @@ const mainRoute = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Layout />,
+    element: 
+      <ProtectedRoute>
+    <Layout />
+    </ProtectedRoute>
+    ,
     children: [
       { path: "", element: <Dashboard /> },
-      { path: "approvals", element: <Approvals /> },
-      { path: "approvals/:id", element: <ApprovalReview /> },
+      { path: "user-management", element: <Approvals /> },
+      { path: "activities", element: <ApprovalReview /> },
+      { path: "payment", element: <Payments /> },
       { path: "settings", element: <Settings /> },
     ],
   },

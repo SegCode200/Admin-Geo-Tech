@@ -1,140 +1,164 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Table, Tabs, Tag, Spin, Card } from "antd";
+import { useInternalUser, useUser } from "../../hooks/userHooks";
+import { useEffect, useState } from "react";
 
-const ReviewDashboard = () => {
-  // Dummy data for pending tasks
-  const dummyTasks = [
+const Users = () => {
+  const { user: applicants, isLoading: loadingUsers } = useUser();
+  const { internalUser: internalUsers, isLoading: loadingInternal } = useInternalUser();
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (loadingUsers || loadingInternal)
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <Spin size="large" />
+      </div>
+    );
+
+  // 🖥 Desktop Columns
+  const applicantCols = [
+    { title: "Full Name", dataIndex: "fullName" },
+    { title: "Email", dataIndex: "email", ellipsis: true },
     {
-      id: "T1",
-      userId: "U1",
-      name: "John Doe",
-      date: "2023-10-01",
-      currentStep: "Land Registration",
-      status: "Pending",
-      email: "john.doe@example.com",
-    },
-    {
-      id: "T2",
-      userId: "U2",
-      name: "Jane Smith",
-      date: "2023-10-02",
-      currentStep: "Certificate of Occupancy",
-      status: "Pending",
-      email: "jane.smith@example.com",
-    },
-    {
-      id: "T3",
-      userId: "U3",
-      name: "Alice Johnson",
-      date: "2023-10-03",
-      currentStep: "Ownership Transfer",
-      status: "Pending",
-      email: "alice.johnson@example.com",
+      title: "Created",
+      dataIndex: "createdAt",
+      render: (d: string) => new Date(d).toLocaleDateString(),
+      responsive: ["sm"],
     },
   ];
 
-  return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Reviewer Dashboard</h1>
-        <div className="bg-white shadow overflow-hidden rounded-lg">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Name
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Current Step
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Date
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Status
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Email
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {dummyTasks.map((task) => (
-                <tr key={task.id}>
-                  {/* Make the entire row clickable */}
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <Link
-                      to={`/dashboard/approvals/${task.id}`}
-                      className="text-indigo-600 hover:text-indigo-900"
-                    >
-                      {task.name}
-                    </Link>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {task.currentStep}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {task.date}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        task.status === "Pending"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : task.status === "Approved"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {task.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {task.email}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      onClick={() => alert("Approve action taken")}
-                      className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => alert("Reject action taken")}
-                      className="ml-2 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                    >
-                      Reject
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+  const internalCols = [
+    { title: "Name", dataIndex: "name" },
+    { title: "Email", dataIndex: "email", ellipsis: true },
+    {
+      title: "Role",
+      dataIndex: "role",
+      render: (role: string) => <Tag color="blue">{role}</Tag>,
+    },
+    { title: "State", dataIndex: ["state", "name"], render: (v) => v || "—" },
+    {
+      title: "Position",
+      dataIndex: "position",
+      responsive: ["sm"],
+    },
+  ];
+
+  // 📱 List View for Mobile / Tablet
+  const ApplicantListView = () => (
+    <div className="grid gap-4">
+      {applicants?.map((user: any) => (
+        <div
+          key={user.id}
+          className="border rounded-lg p-4 bg-white shadow-sm font-sans"
+        >
+          <p className="text-[14px] font-semibold text-gray-800 mb-1">
+            {user.fullName}
+          </p>
+          <p className="text-gray-600 text-[13px] truncate">
+            <span className="font-medium">Email:</span> {user.email}
+          </p>
+          <p className="text-gray-600 text-[13px]">
+            <span className="font-medium">Created:</span>{" "}
+            {new Date(user.createdAt).toLocaleDateString()}
+          </p>
         </div>
-      </div>
+      ))}
+    </div>
+  );
+
+  const InternalUserListView = () => (
+    <div className="grid gap-4">
+      {internalUsers?.map((user: any) => (
+        <div
+          key={user.id}
+          className="border rounded-lg p-4 bg-white shadow-sm font-sans"
+        >
+          <div className="flex justify-between items-center mb-2">
+            <p className="text-[14px] font-semibold text-gray-800">{user.name}</p>
+            <Tag color="blue">{user.role}</Tag>
+          </div>
+          <p className="text-gray-600 text-[13px] truncate">
+            <span className="font-medium">Email:</span> {user.email}
+          </p>
+          <p className="text-gray-600 text-[13px]">
+            <span className="font-medium">State:</span>{" "}
+            {user.state?.name || "—"}
+          </p>
+          <p className="text-gray-600 text-[13px]">
+            <span className="font-medium">Position:</span>{" "}
+            {user.position || "—"}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="p-3 sm:p-4 md:p-6 font-sans">
+      <Card
+        title={
+          <span className="font-semibold text-[16px] sm:text-[18px] text-gray-700">
+            User Management
+          </span>
+        }
+        className="shadow-sm rounded-lg overflow-hidden"
+        bodyStyle={{ padding: "0.75rem" }}
+      >
+        <Tabs
+          defaultActiveKey="1"
+          items={[
+            {
+              key: "1",
+              label: "Applicants",
+              children: isMobile ? (
+                applicants?.length === 0 ?<h1>No Applicants Yet</h1>:
+                <ApplicantListView />
+              ) : (
+                <Table
+                  className="font-sans text-[14px]"
+                  columns={applicantCols}
+                  dataSource={applicants || []}
+                  rowKey="id"
+                  pagination={{
+                    pageSize: 10,
+                    responsive: true,
+                  }}
+                  scroll={{ x: 700 }}
+                />
+              ),
+            },
+            {
+              key: "2",
+              label: "Internal Users",
+              children: isMobile ? (
+                internalUsers?.length === 0 ?<h1>No Internal User Yet</h1>:
+                <InternalUserListView />
+              ) : (
+                <Table
+                  className="font-sans text-[14px]"
+                  columns={internalCols}
+                  dataSource={internalUsers || []}
+                  rowKey="id"
+                  pagination={{
+                    pageSize: 10,
+                    responsive: true,
+                  }}
+                  scroll={{ x: 700 }}
+                />
+              ),
+            },
+          ]}
+        />
+      </Card>
     </div>
   );
 };
 
-export default ReviewDashboard;
+export default Users;
