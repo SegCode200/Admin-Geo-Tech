@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { jwtDecode } from "jwt-decode";
 
 type ValidationResult = {
   isValid: boolean;
@@ -10,12 +11,15 @@ interface LoginState {
   password: string;
   isLoading: boolean;
   error: string | null;
+  token: string | null;
   setEmail: (email: string) => void;
   setPassword: (password: string) => void;
   validateForm: () => ValidationResult;
   resetForm: () => void;
   resetError: () => void;
   setLoading: (isLoading: boolean) => void;
+  setToken: (token: string | null) => void;
+  isTokenExpired: () => boolean;
 }
 
 const PASSWORD_MIN_LENGTH = 6;
@@ -28,12 +32,28 @@ const useLoginStore = create<LoginState>((set, get) => ({
   password: "",
   isLoading: false,
   error: null,
+  token: null,
 
   setEmail: (email) => set({ email: email.trim() }),
 
   setPassword: (password) => set({ password }),
 
   setLoading: (isLoading) => set({ isLoading }),
+
+  setToken: (token) => set({ token }),
+
+  isTokenExpired: (): boolean => {
+    const { token } = get();
+    if (!token) return true;
+
+    try {
+      const decoded = jwtDecode<{ exp: number }>(token);
+      const expirationDate = new Date(decoded.exp * 1000);
+      return expirationDate <= new Date();
+    } catch (error) {
+      return true;
+    }
+  },
 
   validateForm: (): ValidationResult => {
     const { email, password } = get();

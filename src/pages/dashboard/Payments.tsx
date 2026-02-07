@@ -1,6 +1,8 @@
 import { Table, Tag, Spin, Card } from "antd";
 import { usePayments } from "../../hooks/userHooks";
+import PageHeader from "../../components/PageHeader";
 import { useState, useEffect } from "react";
+import type { ColumnsType } from "antd/es/table";
 
 const Payments = () => {
   const { payments: data, isLoading } = usePayments();
@@ -21,7 +23,7 @@ const Payments = () => {
     );
 
   // 🖥 DESKTOP TABLE COLUMNS
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: "CofO No.",
       dataIndex: "cofONumber",
@@ -38,7 +40,7 @@ const Payments = () => {
       title: "Email",
       dataIndex: ["user", "email"],
       ellipsis: true,
-      responsive: ["md"],
+      responsive: ["lg"],
       width: 220,
     },
     {
@@ -65,7 +67,7 @@ const Payments = () => {
       title: "Date",
       dataIndex: "createdAt",
       render: (date: string) => new Date(date).toLocaleDateString(),
-      responsive: ["sm"],
+      responsive: ["md"],
       width: 160,
     },
   ];
@@ -85,7 +87,7 @@ const Payments = () => {
         return (
           <div
             key={item.id}
-            className="border rounded-lg p-4 bg-white shadow-sm"
+            className="bg-white rounded-xl shadow-card border p-4"
           >
             <div className="flex justify-between items-center mb-2">
               <p className="text-[14px] font-semibold text-gray-800">
@@ -121,13 +123,15 @@ const Payments = () => {
 
   return (
     <div className="p-3 sm:p-4 md:p-6 font-sans">
+      <PageHeader title="Payments" subtitle="Monitor payments and receipts" />
+
       <Card
         title={
           <span className="font-semibold text-[16px] sm:text-[18px] text-gray-700">
             Payment Monitoring
           </span>
         }
-        className="shadow-sm rounded-lg overflow-hidden"
+        className="shadow-card rounded-xl overflow-hidden"
         bodyStyle={{ padding: "0.75rem" }}
       >
         {isMobile ? (

@@ -1,5 +1,6 @@
 import { Table, Tabs, Tag, Spin, Card } from "antd";
 import { useInternalUser, useUser } from "../../hooks/userHooks";
+import PageHeader from "../../components/PageHeader";
 import { useEffect, useState } from "react";
 
 const Users = () => {
@@ -30,7 +31,7 @@ const Users = () => {
       title: "Created",
       dataIndex: "createdAt",
       render: (d: string) => new Date(d).toLocaleDateString(),
-      responsive: ["sm"],
+      responsive: ["sm" as const],
     },
   ];
 
@@ -42,11 +43,11 @@ const Users = () => {
       dataIndex: "role",
       render: (role: string) => <Tag color="blue">{role}</Tag>,
     },
-    { title: "State", dataIndex: ["state", "name"], render: (v) => v || "—" },
+    { title: "State", dataIndex: ["state", "name"], render: (v:any) => v || "—" },
     {
       title: "Position",
       dataIndex: "position",
-      responsive: ["sm"],
+      responsive: ["sm" as const],
     },
   ];
 
@@ -56,7 +57,7 @@ const Users = () => {
       {applicants?.map((user: any) => (
         <div
           key={user.id}
-          className="border rounded-lg p-4 bg-white shadow-sm font-sans"
+          className="bg-white rounded-xl shadow-card border p-4 font-sans"
         >
           <p className="text-[14px] font-semibold text-gray-800 mb-1">
             {user.fullName}
@@ -78,7 +79,7 @@ const Users = () => {
       {internalUsers?.map((user: any) => (
         <div
           key={user.id}
-          className="border rounded-lg p-4 bg-white shadow-sm font-sans"
+          className="bg-white rounded-xl shadow-card border p-4 font-sans"
         >
           <div className="flex justify-between items-center mb-2">
             <p className="text-[14px] font-semibold text-gray-800">{user.name}</p>
@@ -102,13 +103,15 @@ const Users = () => {
 
   return (
     <div className="p-3 sm:p-4 md:p-6 font-sans">
+      <PageHeader title="User Management" subtitle="Manage applicants and internal users" />
+
       <Card
         title={
           <span className="font-semibold text-[16px] sm:text-[18px] text-gray-700">
             User Management
           </span>
         }
-        className="shadow-sm rounded-lg overflow-hidden"
+        className="shadow-card rounded-xl overflow-hidden"
         bodyStyle={{ padding: "0.75rem" }}
       >
         <Tabs

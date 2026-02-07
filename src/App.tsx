@@ -1,13 +1,20 @@
+import { RouterProvider } from "react-router-dom";
+import router from "./router/mainRoute";
 import { Provider } from "react-redux";
-import { store } from "./store/store";
-import AppInitializer from "./AppInitializer";
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor } from "./store/store";
 
-function App() {
+// Optional: Add a loading component while the store is being rehydrated
+const Loading = () => <div>Loading...</div>;
+
+const App = () => {
   return (
     <Provider store={store}>
-      <AppInitializer />
+      <PersistGate loading={<Loading />} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
     </Provider>
   );
-}
+};
 
 export default App;

@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useAnalytics } from "../../hooks/userHooks";
+import PageHeader from "../../components/PageHeader";
 
 const Dashboard = () => {
   const { anlytics: data, isLoading } = useAnalytics();
@@ -28,6 +29,8 @@ const Dashboard = () => {
 
   return (
     <div className="p-4 md:p-6">
+      <PageHeader title="Overview" subtitle="Application & Land statistics" />
+
       <div style={{ fontFamily: "Urbanist, sans-serif" }}>
   <Row gutter={[16, 16]} className="mb-6 font-semibold">
     {[
@@ -44,7 +47,7 @@ const Dashboard = () => {
       <Col xs={12} sm={8} md={6} lg={4} key={idx}>
         <Card
           size="small"
-          className="text-center font-medium shadow-sm"
+          className="text-center font-medium shadow-card rounded-xl"
           style={{ fontFamily: "Urbanist, sans-serif" }}
         >
           <Statistic
@@ -73,10 +76,6 @@ const Dashboard = () => {
 
 
       <Card title="Application Overview" className="shadow-sm">
-        <div
-          className="w-full h-[250px] sm:h-[300px]"
-          style={{ fontFamily: "Urbanist, sans-serif" }}
-        >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={chartData}
@@ -95,7 +94,6 @@ const Dashboard = () => {
               <Bar dataKey="value" fill="#1677ff" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-        </div>
       </Card>
     </div>
   );

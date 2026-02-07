@@ -1,6 +1,8 @@
 import { Table, Tag, Spin, Card } from "antd";
 import { useActivites } from "../../hooks/userHooks";
+import PageHeader from "../../components/PageHeader";
 import { useState, useEffect } from "react";
+import type { ColumnsType } from "antd/es/table";
 
 const Activities = () => {
   const { activites: data, isLoading } = useActivites();
@@ -23,7 +25,7 @@ const Activities = () => {
     );
 
   // === TABLE COLUMNS FOR DESKTOP ===
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: "CofO No.",
       dataIndex: ["cofO", "cofONumber"],
@@ -79,7 +81,7 @@ const Activities = () => {
         return (
           <div
             key={item.id}
-            className="border rounded-lg p-4 bg-white shadow-sm"
+            className="bg-white rounded-xl shadow-card border p-4"
           >
             <div className="flex justify-between items-center mb-2">
               <p className="text-[14px] font-semibold text-gray-800">
@@ -110,13 +112,15 @@ const Activities = () => {
 
   return (
     <div className="p-3 sm:p-4 md:p-6 font-sans">
+      <PageHeader title="Activities" subtitle="Recent CofO and approval activities" />
+
       <Card
         title={
           <span className="font-semibold text-[16px] sm:text-[18px] text-gray-700">
             All Activities
           </span>
         }
-        className="shadow-sm rounded-lg overflow-hidden"
+        className="shadow-card rounded-xl overflow-hidden"
         bodyStyle={{ padding: "0.75rem" }}
       >
         {/* Switch based on screen size */}

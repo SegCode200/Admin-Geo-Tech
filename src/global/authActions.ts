@@ -6,6 +6,7 @@ export const login = (email: string, password: string) => async (dispatch: AppDi
   try {
     const data = await loginAdmin({ email, password });
     dispatch(setUser(data.user));
+    console.log(data)
   } catch (err: any) {
     throw err.response?.data?.message || "Login failed";
   }

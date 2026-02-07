@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useStates } from "../../hooks/userHooks";
+import PageHeader from "../../components/PageHeader";
 import Select from "react-select";
 import { createInternalUser } from "../../api/authApi";
 import Swal from "sweetalert2";
@@ -129,10 +130,8 @@ const ReviewerSettings = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
-          Add Approver/ Governor
-        </h1>
-        <div className="bg-white shadow overflow-hidden rounded-lg p-6">
+        <PageHeader title="Add Approver/Governor" subtitle="Register internal approvers and governors for review workflows" />
+        <div className="bg-white shadow-card overflow-hidden rounded-xl p-6"> 
           {/* Profile Information */}
           <div className="mb-6">
             <h2 className="text-xl font-medium text-gray-900 mb-4">
@@ -341,7 +340,7 @@ const ReviewerSettings = () => {
             <button
               onClick={saveSettings}
               disabled={loading}
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               {loading ? "Saving..." : "Add Profile"}
             </button>

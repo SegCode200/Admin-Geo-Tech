@@ -30,10 +30,10 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-[500px] h-auto">
-        <h2 className="text-center text-xl font-bold mb-4">Welcome to</h2>
-        <h1 className="text-center text-2xl font-bold mb-4">GeTech</h1>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-white to-gray-100 px-4">
+      <div className="bg-white rounded-xl shadow-card px-8 pt-6 pb-8 mb-4 w-full max-w-[500px] h-auto">
+        <h2 className="text-center text-xl font-semibold mb-2">Welcome to</h2>
+        <h1 className="text-center text-2xl font-bold text-primary mb-4">GeTech</h1>
         <p className="text-center text-gray-600 mb-6">Enter your information below to continue</p>
 
         {/* Email */}

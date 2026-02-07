@@ -44,16 +44,15 @@ const Login = () => {
           title: "Login Failed",
           text: err || "An error occurred during login.",
         });
+        setIsloading(false)
     }
     resetForm();
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
-      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-sm sm:max-w-md">
-        <h1 className="text-center text-2xl font-bold text-blue-600 mb-2">
-          GeTech
-        </h1>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-white to-gray-100 px-4">
+      <div className="bg-white rounded-xl shadow-card p-6 w-full max-w-sm sm:max-w-md">
+        <h1 className="text-center text-2xl font-bold text-primary mb-2">GeTech</h1>
         <p className="text-center text-gray-600 mb-6">Login to your account</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
