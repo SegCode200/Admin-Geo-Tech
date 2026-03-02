@@ -44,7 +44,7 @@ const Dashboard = () => {
         value: data?.revenue?._sum?.paymentAmount || 0,
       },
     ].map((item, idx) => (
-      <Col xs={12} sm={8} md={6} lg={4} key={idx}>
+      <Col xs={12} sm={8} md={6} lg={4} key={idx}> 
         <Card
           size="small"
           className="text-center font-medium shadow-card rounded-xl"
