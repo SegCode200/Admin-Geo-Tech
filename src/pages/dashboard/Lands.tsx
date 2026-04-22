@@ -166,9 +166,14 @@ const Lands = () => {
       <PageHeader title="Land Registrations" subtitle="View and manage submitted land registrations" />
 
       <Card
-        title={<span className="font-semibold text-[16px] sm:text-[18px] text-gray-700">All Land Records</span>}
-        className="shadow-card rounded-xl overflow-hidden"
-        bodyStyle={{ padding: "0.75rem" }}
+        title={
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></div>
+            <span className="text-lg font-semibold text-gray-800">All Land Records</span>
+          </div>
+        }
+        className="shadow-xl border-0 overflow-hidden"
+        bodyStyle={{ padding: "1.5rem" }}
       >
         {isMobile ? (
           <div className="grid gap-4">

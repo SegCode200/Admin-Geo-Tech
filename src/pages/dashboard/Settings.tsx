@@ -24,7 +24,7 @@ const ReviewerSettings = () => {
   const [errors, setErrors]: any = useState({}); // new state for validation errors
   const navigate = useNavigate()
 
-  const { error, isLoading, states } = useStates();
+  const { isLoading, states } = useStates();
 
   const validateFields = () => {
     const newErrors = {

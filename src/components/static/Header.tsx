@@ -1,5 +1,5 @@
 import img from "../../assets/profile.jpg"
-import { FaSearch, FaBell } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 
 const Header = () => {
   return (

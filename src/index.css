@@ -3,10 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 :root {
-  --primary: #2563EB;
-  --primary-600: #1366D9;
-  --muted: #F3F6F9;
-  --card-shadow: 0 6px 18px rgba(38, 65, 142, 0.08);
+  --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --primary-solid: #667eea;
+  --primary-hover: #5a67d8;
+  --secondary: #f093fb;
+  --accent: #f5576c;
+  --muted: #F8FAFC;
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --sidebar-bg: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
 
   font-family: "Urbanist", sans-serif;
   line-height: 1.5;
@@ -20,35 +25,49 @@
 }
 
 body {
-  @apply font-sans text-gray-800 bg-gradient-to-b from-white to-gray-50;
+  @apply font-sans text-gray-800;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
 }
 
 /* Ant Design tweaks for consistent look */
 .ant-btn-primary {
-  background-color: var(--primary);
-  border-color: var(--primary);
-  box-shadow: none;
+  background: var(--primary-solid);
+  border-color: var(--primary-solid);
+  box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.39);
+  transition: all 0.3s ease;
 }
 .ant-btn-primary:hover,
 .ant-btn-primary:focus {
-  background-color: var(--primary-600);
-  border-color: var(--primary-600);
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(102, 126, 234, 0.5);
 }
 
 .ant-card {
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: var(--card-shadow);
   border: none;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.ant-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .ant-table-thead > tr > th {
-  background: transparent;
-  color: #4b5563;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #374151;
   font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
 }
 
 .ant-table {
-  background: transparent;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 /* Force Urbanist font across Ant Design components */

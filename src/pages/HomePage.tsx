@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import receivepayment from "../assets/Certificate of Occupancy.jpg"
 import fastprocessing from "../assets/Fast document processing.jpg"
 import security from "../assets/Document security protection.jpg"

@@ -28,72 +28,142 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="space-y-8">
       <PageHeader title="Overview" subtitle="Application & Land statistics" />
 
       <div style={{ fontFamily: "Urbanist, sans-serif" }}>
-  <Row gutter={[16, 16]} className="mb-6 font-semibold">
-    {[
-      { title: "Total", value: data?.totalApplications },
-      { title: "Approved", value: data?.approved },
-      { title: "Rejected", value: data?.rejected },
-      { title: "Pending", value: data?.pending },
-      { title: "In Review", value: data?.review },
-      {
-        title: "Revenue (₦)",
-        value: data?.revenue?._sum?.paymentAmount || 0,
-      },
-    ].map((item, idx) => (
-      <Col xs={12} sm={8} md={6} lg={4} key={idx}> 
-        <Card
-          size="small"
-          className="text-center font-medium shadow-card rounded-xl"
-          style={{ fontFamily: "Urbanist, sans-serif" }}
-        >
-          <Statistic
-            title={
-              <span
-                className="text-gray-600"
+        <Row gutter={[24, 24]} className="mb-8">
+          {[
+            { 
+              title: "Total", 
+              value: data?.totalApplications,
+              icon: "📊",
+              gradient: "from-blue-500 to-blue-600"
+            },
+            { 
+              title: "Approved", 
+              value: data?.approved,
+              icon: "✅",
+              gradient: "from-green-500 to-green-600"
+            },
+            { 
+              title: "Rejected", 
+              value: data?.rejected,
+              icon: "❌",
+              gradient: "from-red-500 to-red-600"
+            },
+            { 
+              title: "Pending", 
+              value: data?.pending,
+              icon: "⏳",
+              gradient: "from-yellow-500 to-orange-500"
+            },
+            { 
+              title: "In Review", 
+              value: data?.review,
+              icon: "🔍",
+              gradient: "from-purple-500 to-purple-600"
+            },
+            {
+              title: "Revenue (₦)",
+              value: data?.revenue?._sum?.paymentAmount || 0,
+              icon: "💰",
+              gradient: "from-emerald-500 to-teal-600"
+            },
+          ].map((item, idx) => (
+            <Col xs={12} sm={8} md={6} lg={4} key={idx}>
+              <Card
+                size="small"
+                className="text-center font-medium shadow-lg hover:shadow-xl transition-all duration-300 border-0 overflow-hidden"
                 style={{
-                  fontFamily: "Urbanist, sans-serif",
-                  fontWeight: 500,
+                  background: `linear-gradient(135deg, ${item.gradient.split(' ')[0].replace('from-', '')} 0%, ${item.gradient.split(' ')[1].replace('to-', '')} 100%)`,
+                  color: 'white'
                 }}
               >
-                {item.title}
-              </span>
-            }
-            value={item.value || 0}
-            valueStyle={{
-              fontFamily: "Urbanist, sans-serif",
-              fontWeight: 700,
-            }}
-          />
-        </Card>
-      </Col>
-    ))}
-  </Row>
-</div>
+                <div className="text-3xl mb-2">{item.icon}</div>
+                <Statistic
+                  title={
+                    <span
+                      className="text-white/90 font-semibold"
+                      style={{
+                        fontFamily: "Urbanist, sans-serif",
+                      }}
+                    >
+                      {item.title}
+                    </span>
+                  }
+                  value={item.value || 0}
+                  valueStyle={{
+                    fontFamily: "Urbanist, sans-serif",
+                    fontWeight: 800,
+                    color: 'white'
+                  }}
+                />
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
 
 
-      <Card title="Application Overview" className="shadow-sm">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={chartData}
-              style={{ fontFamily: "Urbanist, sans-serif" }}
-            >
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip
-                wrapperStyle={{ fontFamily: "Urbanist, sans-serif" }}
-                labelStyle={{
-                  fontFamily: "Urbanist, sans-serif",
-                  fontWeight: 600,
-                }}
-                itemStyle={{ fontFamily: "Urbanist, sans-serif" }}
-              />
-              <Bar dataKey="value" fill="#1677ff" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+      <Card 
+        title={
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
+            <span className="text-lg font-semibold text-gray-800">Application Overview</span>
+          </div>
+        } 
+        className="shadow-xl border-0"
+        style={{ height: '400px' }}
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={chartData}
+            style={{ fontFamily: "Urbanist, sans-serif" }}
+          >
+            <XAxis 
+              dataKey="name" 
+              tick={{ fill: '#6b7280', fontSize: 12 }}
+              axisLine={{ stroke: '#e5e7eb' }}
+            />
+            <YAxis 
+              tick={{ fill: '#6b7280', fontSize: 12 }}
+              axisLine={{ stroke: '#e5e7eb' }}
+            />
+            <Tooltip
+              wrapperStyle={{ 
+                fontFamily: "Urbanist, sans-serif",
+                borderRadius: '8px',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+              }}
+              labelStyle={{
+                fontFamily: "Urbanist, sans-serif",
+                fontWeight: 600,
+                color: '#374151'
+              }}
+              itemStyle={{ 
+                fontFamily: "Urbanist, sans-serif",
+                color: '#667eea'
+              }}
+              contentStyle={{
+                background: 'white',
+                border: 'none',
+                borderRadius: '8px'
+              }}
+            />
+            <Bar 
+              dataKey="value" 
+              fill="url(#colorGradient)" 
+              radius={[8, 8, 0, 0]}
+            />
+            <defs>
+              <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#667eea" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#764ba2" stopOpacity={0.8}/>
+              </linearGradient>
+            </defs>
+          </BarChart>
+        </ResponsiveContainer>
       </Card>
     </div>
   );
